@@ -1,0 +1,206 @@
+Excellent choice — a **“CoWorking Space Management System”** is a realistic and rich project idea that fits the OOP and database connectivity requirements very well.
+Below is a **complete structured draft** for your **OOP Final System Project (CoWorking Space Management System)** aligned with your course outline for VB.NET + MySQL.
+
+---
+
+## 🖥️ **1. System Title**
+
+**CoWorking Space Management System**
+
+---
+
+## 📘 **2. System Description**
+
+**Purpose:**
+The CoWorking Space Management System is designed to manage coworking space operations efficiently — including user registration, space booking, membership management, and billing.
+
+**Problem It Solves:**
+Manual booking and tracking of coworking spaces often lead to scheduling conflicts, missing payment records, and inefficiencies in managing members and resources. This system automates these tasks, ensuring data consistency and improved management of reservations and payments.
+
+**Scope:**
+The system covers booking, member management, and payment tracking within a single coworking branch. It supports two main user types — Admin and Staff.
+
+**Limitations:**
+
+* It is a **standalone desktop system**, not a web-based platform.
+* It does **not** include online payment integration.
+* It assumes **one coworking location** only (no multi-branch management).
+
+---
+
+## ⚙️ **3. System Core Design and Functionalities**
+
+### **a. MySQL Database Design (Overview)**
+
+Key tables:
+
+* `users` – stores login credentials and user details
+* `members` – coworking members with contact and membership details
+* `spaces` – list of rentable rooms, desks, or meeting areas
+* `bookings` – tracks space reservations
+* `payments` – stores payment records
+* `activity_logs` – tracks system user actions (for Admin audit)
+
+### **b. Types of Users**
+
+* **Admin**
+* **Staff**
+
+*(Optional: Guest / Registered User can be added if desired.)*
+
+### **c. Define User Roles**
+
+| **User Type**      | **Access Level & Actions**                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------------------- |
+| **Admin**          | Manage users, view all records, approve or cancel bookings, generate reports, manage payments  |
+| **Staff**          | Encode member and booking data, update existing records, record payments, view limited reports |
+| *(Optional Guest)* | View available spaces and pricing only                                                         |
+
+---
+
+## 🧩 **4. Define Features and Functionalities**
+
+### **Main Modules**
+
+1. **Login and Logout Module**
+
+   * Authentication using username and password
+   * Role-based dashboard access
+   * Session management
+
+2. **User Management Module (Admin only)**
+
+   * Create, update, or deactivate user accounts
+   * Assign roles (Admin, Staff)
+
+3. **Member Management Module**
+
+   * Register new members
+   * Update member details
+   * View active/inactive members
+
+4. **Space Management Module**
+
+   * Manage available coworking spaces (type, rate per hour/day)
+   * Mark spaces as “available” or “occupied”
+
+5. **Booking Management Module**
+
+   * Staff can book spaces for members
+   * Check space availability before booking
+   * Update or cancel reservations
+
+6. **Payment Management Module**
+
+   * Record member payments
+   * Link payments to booking IDs
+   * Generate payment summaries
+
+7. **Search and Filter Module**
+
+   * Filter bookings by date, member, or space
+   * Search members or payments
+
+8. **Report Generation (Admin)**
+
+   * Generate daily/monthly revenue reports
+   * Generate booking activity logs
+
+---
+
+## 🗄️ **5. Database Connectivity**
+
+A **Singleton** pattern will be used for the database connection to ensure only one connection instance is used throughout the system.
+
+**Sample VB.NET Singleton Connection Code:**
+
+```vbnet
+Imports MySql.Data.MySqlClient
+
+Public Class DatabaseConnection
+    Private Shared _instance As DatabaseConnection
+    Private _connection As MySqlConnection
+
+    Private Sub New()
+        Dim connectionString As String = "server=localhost;user id=root;password=;database=coworking_db;"
+        _connection = New MySqlConnection(connectionString)
+    End Sub
+
+    Public Shared ReadOnly Property Instance() As DatabaseConnection
+        Get
+            If _instance Is Nothing Then
+                _instance = New DatabaseConnection()
+            End If
+            Return _instance
+        End Get
+    End Property
+
+    Public ReadOnly Property Connection() As MySqlConnection
+        Get
+            Return _connection
+        End Get
+    End Property
+End Class
+```
+
+---
+
+## 🧠 **6. UML Class Diagram (Conceptual Design)**
+
+**Main Classes and Relationships:**
+
+* `User`
+* `Member`
+* `Space`
+* `Booking`
+* `Payment`
+* `DatabaseConnection` (Singleton)
+
+### **Relationships**
+
+* **Association:**
+  `Booking` ↔ `Member` (A member can have multiple bookings)
+
+* **Aggregation:**
+  `Admin` manages multiple `Staff` (Admin is not destroyed if Staff are deleted)
+
+* **Composition:**
+  `Booking` contains `Payment` (if Booking is deleted, its Payment is also deleted)
+
+* **Encapsulation:**
+  Each class hides its fields with private attributes and public getters/setters.
+
+* **Abstraction:**
+  Common features can be abstracted into a base class `Person` (for `User` and `Member`).
+
+---
+
+## 💻 **7. Coding Implementation (Finals)**
+
+Key implementation files:
+
+* `frmLogin.vb`
+* `frmDashboard.vb`
+* `frmUserManagement.vb`
+* `frmMembers.vb`
+* `frmSpaces.vb`
+* `frmBooking.vb`
+* `frmPayments.vb`
+* `DatabaseConnection.vb`
+
+The implementation will follow **OOP principles**:
+
+* **Encapsulation:** Use of private fields and public methods.
+* **Inheritance:** `Admin` and `Staff` inherit from `User`.
+* **Polymorphism:** Overriding of `DisplayInfo()` methods for user types.
+* **Composition:** `Booking` includes a `Payment` object.
+* **Abstraction:** Abstract base class for common entities.
+
+---
+
+Would you like me to:
+
+1. Generate a **detailed UML Class Diagram** (text + visual layout)?
+2. Or proceed to write the **MySQL database schema (CREATE TABLE statements)** next?
+
+Both are required for your semi-final submission (steps 5 & 6).
